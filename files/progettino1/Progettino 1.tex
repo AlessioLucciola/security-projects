@@ -1,0 +1,287 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+% \geometry{margin=2in} % for example, change the margins to 2 inches all round
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx} % support the \includegraphics command and options
+
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+% These packages are all incorporated in the memoir class to one degree or another...
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{titling}
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\usepackage[colorlinks]{hyperref}
+\usepackage{cleveref}
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+%%% END Article customizations
+
+%%% The "real" document content comes below...
+
+
+
+%TITOLO - PAGINA INIZIALE
+\title{%
+ Progettino 1 \\
+  \large Corso di Sicurezza}
+
+\author{%
+ Alessio Lucciola \\
+  \large Matricola 1823638}
+\date{2 aprile 2021}
+
+\begin{document}
+
+\maketitle
+
+\newpage
+
+%SOMMARIO
+\tableofcontents
+\newpage
+
+%Introduzione
+\section{Introduzione}
+Il seguente progetto prevedeva di crackare il maggior numero di password a partire da un file dei valori hash, utilizzando un qualsiasi strumento.
+
+%Approccio
+\section{Approccio}
+Per svolgere questo progetto ho deciso di utilizzare \href{https://www.openwall.com/john/}{John The Ripper}, un software \textit{open source}  i cui punti di forza sono la possibilità di agire combinando diverse modalità di cracking e l'autorilevamento di password in hash.
+\space
+Sono state provate diverse modalità, via via sempre più accurate, per cercare di trovare il maggior numero di password. \\
+Inizialmente ho utilizzato la modalità "single crack" con la quale, in breve tempo, sono riuscito a trovare 31 occorrenze (dove 30 sono utenti con password "NO PASSWORD"). \\
+Successivamente sono passato alla "wordlist mode". Sono partito con poche wordlist di piccole dimensioni per testare la fattibilità di questo metodo, riuscendo a trovare svariate password. Visto l'esito positivo, ho iniziato a scaricare altre note wordlist di dimensioni sempre maggiori (ad esempio all.lst di Openwall) andandole poi a testare. Queste mi hanno permesso di rivelare un buon numero di password. \\
+Sono poi passato al metodo brute-force "incremental". Prima di tutto, ho avviato un ciclo con parametri "--min-length=5 --max-length=6" che mi ha permesso di scovare buona parte delle password da cinque e sei caratteri. Ho poi effettuato un altro ciclo su password di 7 caratteri ma ho deciso di abbandonare questo metodo perchè troppo dispensioso. Ho quindi iniziato ad applicare varie maschere che hanno accorciato notevolmente i tempi di ricerca ed ho iterato questo metodo anche per le password di otto caratteri. L'obiettivo delle maschere era quello di trovare password con un pattern predefinito (ad esempio parole di sette caratteri con un numero alla fine). Alcune maschere hanno avuto un buon esito permettendomi di trovare, in maniera abbastanza veloce, alcune password. Sono state testate svariate maschere anche in base alla struttura delle password già trovate in precedenza (alcuni esempi di comandi con maschere si trovano nella lista dei comandi). \\
+Ho infine provato ad utilizzare il metodo "prince" con la wordlist "rockyou.lst", su password di 7 e 8 caratteri, utilizzando i parametri "--prince-elem-cnt-min=1 --prince-elem-cnt-max=2". \\
+I test sono stati svolti principalmente utilizzando il charset "alnum" (caratteri alfanumerici). Alcuni test sono stati svolti con altri charset in modo da includere anche caratteri speciali. \\
+\\
+In totale, combinando i vari metodi, sono state trovate \textbf{102 password} (su 114).
+\newpage
+
+%ListaPass
+\section{Lista delle password}
+Qui di seguito, una tabella di terne username, password in chiaro, la rispettiva versione hash e il numero del comando con il quale la password è stata scoperta: \\
+
+\begin{tabular}{|p{0.5cm}|p{3.1cm}|p{3.1cm}|p{3.3cm}|p{1.7cm}|}
+\hline
+ & \textbf{Username} & \textbf{Password} & \textbf{Versione Hash} & \textbf{Comando} \\ \hline
+1 & zjjyl & zhang123 & FoncLBJBak4J2 &  3\\ \hline
+2 & zjie & NO PASSWORD &	& 1 \\ \hline
+3 & zhonggu & bowang & aGhUv.z.0aSXs &  9\\ \hline
+4 & yuxm & yuheng & rlS/YAKc9KhaM & 2 \\ \hline
+5 & yanc & NO PASSWORD &	& 1 \\ \hline
+6 & xiangcai & NO PASSWORD & & 1\\ \hline
+7 & wutao & wwwwww & ASad7icrMKkos & 2 \\ \hline
+8 & wenxinqi & this6811 & pX2.yYDEMKSBw & 8\\ \hline
+9 & weizh & NO PASSWORD &  & 1\\ \hline
+10 & wanfei & llchen12 & 3YV/IUiVwDVHo & 3 \\ \hline
+11 & vpetrov & NO PASSWORD & & 1\\ \hline
+12 & tuefel & Thebone5 & bb5WG8oLJOkyM & 3 \\ \hline
+13 & tsljz & ljz5865 & kRSzwSCu39p9. & 10 \\ \hline
+14 & tianshi	& cpre532 & NKYidjg81QZSw & 11 \\ \hline
+15 & tdinman & tme3garp & z8aQQXPzVQaNw & 14 \\ \hline
+16 & surendra & ultimate & JjXqf52ZB2uVs & 2 \\ \hline
+17 & stony & kiesha & 4xKMtR0/TlcYg & 9 \\ \hline
+18 & sherli & new65596 & smpjBCeZNc3V. &  5\\ \hline
+19 & ratnakar & NO PASSWORD & & 1\\ \hline
+20 & preungsa & alissara & QNPt0rtcOqVHg & 2\\ \hline
+21 & prasad & poruri & skc9rL5TEkaBQ & 2\\ \hline
+22 & plcui & peilian & f1hDinAwKcMNc & 2\\ \hline
+23 & pivanov & acmahi2 & vYRlGAiUcTAOQ & 3 \\ \hline
+24 & phan & hp1215 & /jqVvYA/m4M2o & 9 \\ \hline
+25 & pferdig & NO PASSWORD & & 1 \\ \hline
+26 & parikh	& s8390 & nA3P8SQtbNA0A & 9 \\ \hline
+27 & norules & zen2zach & fFdxLoH4/Rkew & 14 \\ \hline
+28 & nishi & qwer123 & f9kEW9DnuhRAk & 3 \\ \hline
+29 & naumaz & nm542 & qzFcZ3btxgsdA & 9 \\ \hline
+30 & mmeiners & vortex & e7hvcqLV0YUmQ & 2\\ \hline
+31 & ljh & NO PASSWORD & & 1\\ \hline
+32 & lchill & fosteck & wKZMDUqnhfcYA & 2\\ \hline
+33 & kwhitake & b1llet20 & PQ/I3C99cfbcY & 8 \\ \hline
+34 & krishna & NO PASSWORD & & 1\\ \hline
+35 & jwcarter & dorothy & HpUlZlNIV6TH2 & 2\\ \hline
+36 & jaalex & lind1ber & oMNCdIjRcJgQg & 13 \\ \hline
+37 & hagens & jeremey & EwsR4wcQ9mCtw & 2\\ \hline
+\end{tabular}
+
+\newpage
+\begin{tabular}{|p{0.5cm}|p{3.1cm}|p{3.1cm}|p{3.3cm}|p{1.7cm}|}
+\hline
+38 & freds & 311bliss & goAVEUtPbFVdc & 5\\ \hline
+39 & fanp & ffffff & xOBJK020QFPMo & 2\\ \hline
+40 & daimj & nianzhen & E0GeYx.9dkRes & 4 \\ \hline
+41 & creynold & miss69a & 2W/IOXfPmVYaw & 15 \\ \hline
+42 & chenfeng & NO PASSWORD & & 1\\ \hline
+43 & c1zhu & NO PASSWORD & & 1\\ \hline
+44 & C1zavesk & st23bc & 6VDfiJNHJWjZA & 9 \\ \hline
+45 & c1vander & NO PASSWORD & & 1\\ \hline
+46 & C1stockh & lastclas	& zYAPRhE0EvYhI & 2\\ \hline
+47 & C1steph2 & not4me	 & ge6liK2Vq3aco & 9 \\ \hline
+48 & C1steph1 & hilander & jyJRC.Oa9fn0Q & 4 \\ \hline
+49 & c1stavro & jam1mer & 8Xh0uHo2LKdOY & 8\\ \hline
+50 & C1sowads & NO PASSWORD & & 1\\ \hline
+51 & C1smith & NO PASSWORD	& & 1\\ \hline
+52 & C1rolfes & ranger & 9tyDMjBEb0VM6 & 2\\ \hline
+53 & C1reynol & NO PASSWORD & & 1\\ \hline
+54 & C1ray & niloy1ra & R/ANeRa8bpyhY & 12 \\ \hline
+55 & c1ray	& NO PASSWORD &	 & 1\\ \hline
+56 & c1rasper & NO PASSWORD & & 1\\ \hline
+57 & C1rasmus & karl9544 & ihhR6n2aFUyag & 16 \\ \hline
+58 & C1rapp & tigers & E8n1y32c.rokw & 2\\ \hline
+59 & C1phan & security & iPGAYh7UQyrP6 & 2\\ \hline
+60 & c1pender & passme	& U.0mgW/1TJXps & 2\\ \hline
+61 & c1patric & NO PASSWORD & & 1\\ \hline
+62 & C1obrado & C1obrado & lRERnUQ/HrStU & 1\\ \hline
+63 & C1muegge & Stuka1 & 14b0ve3npkLLg & 9 \\ \hline
+64 & C1marotz & Ilv32Jas & lh7rgQfngXKX6 & 8\\ \hline
+65 & c1maddef & NO PASSWORD & & 1\\ \hline
+66 & C1luttre & shadow & 31QyV/P1F.Qcw & 2\\ \hline
+67 & C1lualle & kicker51 & R7GRVeQkxHGAw & 7\\ \hline
+68 & C1little & christin & /PBiubaP4vV/Q & 2\\ \hline
+69 & c1liss & NO PASSWORD &  & 1\\ \hline
+70 & C1leung & NO PASSWORD & & 1\\ \hline
+71 & C1kumar & pvpvzm & pI4J5TtF5PDEE &  5\\ \hline
+72 & C1klopp & NO PASSWORD &  & 1\\ \hline
+73 & C1jacobo & noogie.	& YG7sgFjyVjLgE & 3 \\ \hline
+74 & c1hovre & mack66y & IHcr1bcr31Dg6 & 15 \\ \hline
+75 & C1harris & merlin1 & CNK/cFsoYuldM & 4 \\ \hline
+76 & c1gonzal & rhette & y8y/b6iwz0.wI & 9\\ \hline
+77 & c1gessne & NO PASSWORD & & 1\\ \hline
+78 & c1franko & NO PASSWORD & & 1\\ \hline
+79 & C1fitzge & NO PASSWORD &  & 1\\ \hline
+80 & C1fell	& Feller98 & A.1SXAwxwtkuw & 8\\ \hline
+\end{tabular}
+
+\newpage
+\begin{tabular}{|p{0.5cm}|p{3.1cm}|p{3.1cm}|p{3.3cm}|p{1.7cm}|}
+\hline
+81 & C1feldka & cpre532 & 3KECvQDnmCIMg & 11 \\ \hline
+82 & C1elkhat & nsk1115	 & ctCD2jHdQwO/s & 5 \\ \hline
+83 & c1dube & kitotoki & tC86Zvr12gl9U & 3\\ \hline
+84 & C1diaz & NO PASSWORD & & 1\\ \hline
+85 & c1deng & NO PASSWORD	& & 1\\ \hline
+86 & c1delsey & murdoch & UYWQaUAOaq54c & 3\\ \hline
+87 & C1dean & bailey & TFQwXXPUC2PQI & 3\\ \hline
+88 & C1dawson & cuse123 & T2HvAD2AvLmeQ & 10 \\ \hline
+89 & C1corbet & ash1dog & PhvQwp0O2y73g & 6 \\ \hline
+90 & c1cheram & NO PASSWORD &  & 1\\ \hline
+91 & C1canton & tavy2ner & nY7juyYKK60ws & 13 \\ \hline
+92 & C1caldej & NO PASSWORD & & 1\\ \hline
+93 & C1anders & javat1ze & yov58b5qxeqOw & 12 \\ \hline
+94 & C1albata & bara824 & 2KTn9bkZgU9QI & 3\\ \hline
+95 & C1adair & superman & 4ksmQIt8tD5uc & 2\\ \hline
+96 & bsmith1 & ukv930 & mHEpEuk8EKfn2 & 9 \\ \hline
+97 & bowang & cpre532 & AdAvT/LLjeQL6 & 11 \\ \hline
+98 & bork & moreno & yvTPsIMgxaaRs & 4 \\ \hline
+99 & binzhu & another & Wl4BjRtBq86u6 & 2\\ \hline
+100 & bin\_lin & zhuoyang & YD.oUzn6Thavk & 4 \\ \hline
+101 & asokt & NO PASSWORD & & 1\\ \hline
+102 & aruna & akka1508 & ngddzm/Plxlt2 & 6 \\ \hline
+\end{tabular}
+\newpage
+
+%ListaComandi
+\section{Lista dei comandi (con tempo di esecuzione)}
+Qui di seguito è presente una lista dei comandi utilizzati per trovare le password. Ho inserito \textbf{solamente} i comandi che mi hanno permesso, in un tempo ragionevole, di trovare almeno una password. Ogni comando è stato eseguito per almeno 30/40 minuti, dopo i quali la ricerca è stata interrotta (nel caso in cui non sia stata scoperta alcuna nuova password). Sotto ad ogni comando è presente il relativo tempo di esecuzione e le password trovate in quel lasso di tempo. \\
+Lista dei comandi:
+\begin{enumerate}
+\item{john --single "file/passwd" \\
+Tempo: 31g 0:00:00:45}
+\item{john --wordlist=="files/all.lst" "files/passwd"\\
+Tempo: 20g 0:00:01:13}
+\item{john --wordlist="files/rockyou.lst" "files/passwd"\\
+Tempo: 10g 0:00:02:08}
+\item{john --wordlist="files/realuniq.lst" "files/passwd"\\
+Tempo: 5g 0:00:10:49}
+\item{john --wordlist="files/pwned.lst" "files/passwd"\\
+Tempo: 4g 0:00:17:45}
+\item{john --wordlist="files/openwall\_all.lst" "files/passwd"\\
+Tempo: 2g 0:00:1:27}
+\item{john --wordlist="files/10\_million\_password\_list.txt" "files/passwd"\\
+Tempo: 1g 0:00:2:31}
+\item{john --wordlist="files/xsukax-Wordlist-All.txt" "files/passwd" \\
+Tempo: 5g 0:00:34:59}
+\item{john.exe --incremental --min-length=5 --max-length=6 --fork=12 "files/passwd"\\
+Tempo: 10g 0:02:48:34}
+\item{john.exe --incremental --min-length=7 --max-length=7 --fork=12 "files/passwd"\\
+Tempo: 2g 0:02:19:02}
+\item{john.exe --incremental --mask=?l?l?l?l?d?d?d --fork=12 "files/passwd"\\
+Tempo: 3g 0:00:36:45}
+\item{john.exe --incremental --mask=?l?l?l?l?l?d?l?l --fork=12 "files/passwd"\\
+Tempo: 2g 0:01:13:55}
+\item{john.exe --incremental --mask=?l?l?l?l?d?l?l?l --fork=12 "files/passwd"\\
+Tempo: 2g 0:01:13:55}
+\item{john.exe --incremental --mask=?l?l?l?d?l?l?l?l --fork=12 "files/passwd"\\
+Tempo: 2g 0:02:01:03}
+\item{john.exe --prince="files/rockyou.lst" --prince-elem-cnt-min=1 --prince-elem-cnt-max=2 --min-len=7 --max-len=7 --fork=12 "files/passwd"\\
+Tempo: 2g 0:00:02:12}
+\item{john.exe --prince="files/rockyou.lst" --prince-elem-cnt-min=1 --prince-elem-cnt-max=2 --min-len=8 --max-len=8 --fork=12 "files/passwd"\\
+Tempo: 1g 0:00:14:19}
+\end{enumerate}
+
+%ListaWordlist
+\section{Lista delle wordlist}
+Qui di seguito, la lista delle wordlist utilizzate:
+\begin{itemize}
+\item{openwall\_all}
+\item{rockyou}
+\item{pwned-password-2.0}
+\item{realuniq}
+\item{10\_million\_password\_list}
+\item{xsukax-wordlist}
+\item{weakpass-2.0}
+\end{itemize}
+
+%Hardware
+\section{Specifiche Hardware}
+Qui di seguito, le specifiche della macchina sulla quale è stato svolto il progetto:
+\begin{itemize}
+\item{OS: Microsoft Windows 10 Home 64 bit;}
+\item{Versione: 10.0.19042 N/D build 19042;}
+\item{CPU: Intel(R) Core(TM) i5-10600 CPU @ 3.30GHz (12 CPUs), ~3.3GHz;}
+\item{Memoria: 16384MB RAM;}
+\item{GPU: NVIDIA GeForce GTX 1060 3GB;}
+\end{itemize}
+
+\end{document}
